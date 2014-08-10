@@ -1,6 +1,5 @@
 RandomMod aka RandomCrapMod
 
-===
 
 	This is a mod with a planned variety of
 random items. Items currently implemented: (don't worry if there aren't many there)
