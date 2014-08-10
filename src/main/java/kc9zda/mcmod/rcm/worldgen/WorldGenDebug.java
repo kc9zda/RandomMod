@@ -30,7 +30,7 @@ public class WorldGenDebug implements IWorldGenerator {
 				sy = world.getSpawnPoint().posY;
 				sz = world.getSpawnPoint().posZ;
 				world.setBlock(sx, sy, sz+1, Blocks.chest);
-				te = (TileEntityChest)world.getTileEntity(sx, sy, sz);
+				te = (TileEntityChest)world.getTileEntity(sx, sy, sz+1);
 				te.setInventorySlotContents(1, new ItemStack(RCMExtras.snowTnt, 1, 0));
 			}
 		}
