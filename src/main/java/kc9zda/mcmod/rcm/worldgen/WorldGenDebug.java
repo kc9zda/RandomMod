@@ -28,23 +28,25 @@ public class WorldGenDebug implements IWorldGenerator {
 				TileEntityChest te;
 				sx = world.getSpawnPoint().posX;
 				sz = world.getSpawnPoint().posZ;
-				//sy = this.findGroundY(world,sx,sz);
-				sy = 100;
+				sy = this.findGroundY(world, sx, world.getSpawnPoint().posY ,sz);
+				System.out.println("sx = "+sx);
+				System.out.println("sy = "+sy);
+				System.out.println("sz = "+sz);
 				world.setBlock(sx, sy, sz+1, Blocks.chest);
 				te = (TileEntityChest)world.getTileEntity(sx, sy, sz+1);
+				if (te == null) System.err.println("CHEST TILE ENTITY IS NULL!!!");
 				te.setInventorySlotContents(1, new ItemStack(RCMExtras.snowTnt));
-				te.setInventorySlotContents(2, new ItemStack(Blocks.torch));
 			}
 		}
 	}
 
-	private int findGroundY(World w, int sx, int sz) {
+	private int findGroundY(World w, int sx, int sy, int sz) {
 		int i = 0;
 		
-		while (w.blockExists(sx, 63+i, sz)) {
+		while (!w.canBlockSeeTheSky(sx, sy+i, sz)) {
 			i++;
 		}
-		return i+63;
+		return sy+i;
 	}
 
 }
