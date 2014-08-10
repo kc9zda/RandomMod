@@ -21,3 +21,5 @@ run
 
 #mac
 .DS_Store
+
+/src/main/com/example/*
