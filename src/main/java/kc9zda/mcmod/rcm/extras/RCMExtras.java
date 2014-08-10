@@ -6,6 +6,7 @@ import kc9zda.mcmod.rcm.extras.item.ItemExplodingSnowball;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RCMExtras {
 	
@@ -19,6 +20,7 @@ public class RCMExtras {
 	
 	public static void initItems() {
 		snowTnt = new ItemExplodingSnowball();
+		GameRegistry.registerItem(snowTnt, "snowTnt");
 	}
 
 	public static void initEntities() {

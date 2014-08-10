@@ -1,6 +1,7 @@
 package kc9zda.mcmod.rcm.extras.item;
 
 import kc9zda.mcmod.rcm.RandomCrapMod;
+import kc9zda.mcmod.rcm.extras.entity.EntityExplodingSnowball;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,7 @@ public class ItemExplodingSnowball extends Item {
 		super();
 		this.maxStackSize=16;
 		this.setUnlocalizedName("snowTnt");
+		this.setTextureName("rcm:snowTnt");
 		this.setCreativeTab(CreativeTabs.tabCombat);
 	}
 
@@ -35,24 +37,16 @@ public class ItemExplodingSnowball extends Item {
 		w.playSoundAtEntity(p, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 		if (!w.isRemote)
         {
-            //w.spawnEntityInWorld(new EntityExplodingSnowball(w, p));
-			addChat(p,"Hello World!");
-			if (p.isSneaking()) {
-				addChat(p,"Player Is Sneaking");
-			}
+            w.spawnEntityInWorld(new EntityExplodingSnowball(w, p));
         }
 		return r;
 	}
-	
-	
-	private void addChat(EntityPlayer p, String s) {
-		p.addChatMessage(new ChatComponentText(s));
-	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerIcons(IIconRegister r) {
 		IIcon i = r.registerIcon(RandomCrapMod.MODID+":snowTnt");
+		this.itemIcon = i;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -63,9 +57,6 @@ public class ItemExplodingSnowball extends Item {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack i) {
-		if (i.getItem().equals(this)) {
-			return "snowTnt";
-		}
-		return "null";
+		return super.getUnlocalizedName(i);
 	}
 }

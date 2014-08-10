@@ -6,6 +6,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntityExplodingSnowball extends EntityThrowable {
@@ -46,12 +47,19 @@ public class EntityExplodingSnowball extends EntityThrowable {
 					int r = 3;
 					if (ec.getPowered()) r *= 2;
 					float f = ((float)r+0.5F);
-					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, false);
+					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
 				} else {
-					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 0.5F, false);
+					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.5F, true);
 				}
 			} else {
-				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 1.0F, false);
+				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, true);
+			}
+			if (!this.worldObj.isRemote) {
+				this.setDead();
+			}
+		} else {
+			if (m.typeOfHit == MovingObjectType.BLOCK) {
+				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, true);
 			}
 			if (!this.worldObj.isRemote) {
 				this.setDead();
