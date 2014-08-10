@@ -1,4 +1,4 @@
-RandomMod aka RandomCrapMod
+RandomCrapMod
 
 	This is a mod with a planned variety of
 random items. Items currently implemented: (don't worry if there aren't many there)
@@ -16,3 +16,5 @@ please open an issue with a title starting with:
 "[FEATURE REQUEST]". Any issues for feature requests,
 that do not follow this rule will be treated as 
 near-lowest priority. 
+
+	If the first line is still derping, please ignore, it is probably a problem with GitHub.
