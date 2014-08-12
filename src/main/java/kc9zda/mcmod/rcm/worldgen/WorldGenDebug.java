@@ -14,11 +14,13 @@ import cpw.mods.fml.common.IWorldGenerator;
 public class WorldGenDebug implements IWorldGenerator {
 	
 	public static boolean hasBeenGenerated;
-	public static final boolean DEBUG_MODE = true;
+	public static final boolean DEBUG_MODE = false;
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world,
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+		/* commented so eclipse doesn't complain */
+		/*
 		if (!hasBeenGenerated && DEBUG_MODE) {
 			hasBeenGenerated = true;
 			if (!world.isRemote) {
@@ -38,6 +40,7 @@ public class WorldGenDebug implements IWorldGenerator {
 				te.setInventorySlotContents(1, new ItemStack(RCMExtras.snowTnt));
 			}
 		}
+		*/
 	}
 
 	private int findGroundY(World w, int sx, int sy, int sz) {
