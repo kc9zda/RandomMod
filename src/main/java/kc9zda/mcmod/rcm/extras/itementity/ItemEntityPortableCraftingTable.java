@@ -2,23 +2,30 @@ package kc9zda.mcmod.rcm.extras.itementity;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
 import kc9zda.mcmod.rcm.itementity.ItemEntityInventory;
 
 public class ItemEntityPortableCraftingTable extends ItemEntityInventory {
 
-	public ItemEntityPortableCraftingTable() {
-		super(10);
+	public ItemEntityPortableCraftingTable(ItemStack i) {
+		super(9, i);
 	}
 
-	public InventoryCrafting getCraftingInv(Container c) {
-		InventoryCrafting ic = new InventoryCrafting(c, 3, 3);
+	public void readCraftingMatrix(InventoryCrafting craftingMatrix) {
 		int i = 1;
 		
-		if (ic == null) System.err.println("ic IS NULL!!!");
 		while (i < 9) {
-			ic.setInventorySlotContents(i, this.getStackInSlot(i));
+			craftingMatrix.setInventorySlotContents(i-1, this.getStackInSlot(i));
 			i++;
 		}
-		return ic;
+	}
+	
+	public void writeCraftingMatrix(InventoryCrafting craftingMatrix) {
+		int i = 1;
+		
+		while (i < 9) {
+			this.setInventorySlotContents(i, craftingMatrix.getStackInSlot(i-1));
+			i++;
+		}
 	}
 }

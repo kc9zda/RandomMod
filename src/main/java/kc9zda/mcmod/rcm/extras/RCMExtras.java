@@ -13,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -46,8 +47,10 @@ public class RCMExtras implements IGuiHandler {
 	}
 	
 	public static void initRecipes() {
+		ItemStack i = new ItemStack(portableCrafting);
+	
 		GameRegistry.addRecipe(new ItemStack(snowTnt), "STS", "TST", "STS", 'S', Items.snowball, 'T', Blocks.tnt);
-		GameRegistry.addRecipe(new ItemStack(portableCrafting), "T ", "S ", 'T', Blocks.crafting_table, 'S', Items.stick);
+		GameRegistry.addRecipe(i, "T ", "S ", 'T', Blocks.crafting_table, 'S', Items.stick);
 	}
 
 	@Override
@@ -59,12 +62,9 @@ public class RCMExtras implements IGuiHandler {
 		case 0:
 			ItemStack i = player.getCurrentEquippedItem();
 			ItemPortableCraftingTable item = (ItemPortableCraftingTable) i.getItem();
-			ItemEntityPortableCraftingTable iepct = (ItemEntityPortableCraftingTable) item.createItemEntity(0);
+			ItemEntityPortableCraftingTable iepct = (ItemEntityPortableCraftingTable) item.createItemEntity(i);
 			
-			if (i == null) System.err.println("i IS NULL!!!");
-			if (item == null) System.err.println("item IS NULL!!!");
-			if (iepct == null) System.err.println("iepct IS NULL!!!");
-			c = item.getContainer(world, iepct, player);
+			c = item.getContainer(world, iepct, player, i);
 			break;
 		default:
 			c = null;

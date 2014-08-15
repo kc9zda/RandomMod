@@ -4,19 +4,22 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class ItemEntityInventory extends ItemEntity implements IInventory {
 
-	public int invSize = 0;
+	public int invSize;
 	public String invName;
 	private ItemStack inv[];
 	
-	public ItemEntityInventory(int size) {
+	public ItemEntityInventory(int size, ItemStack i) {
+		super(i);
 		this.invSize = size;
 		this.inv = new ItemStack[size];
+		this.writeToNBT(this.itemStack.getTagCompound());
 	}
 	
 	@Override
@@ -96,7 +99,7 @@ public class ItemEntityInventory extends ItemEntity implements IInventory {
 		this.invSize = invSz;
 		this.inv = new ItemStack[invSz];
 		while (i < invSz) {
-			this.inv[i+1] = this.readSlotFromNBT(nl.getCompoundTagAt(i));
+			this.inv[i] = this.readSlotFromNBT(nl.getCompoundTagAt(i));
 			i++;
 		}
 		if (nbt.hasKey("invName")) {

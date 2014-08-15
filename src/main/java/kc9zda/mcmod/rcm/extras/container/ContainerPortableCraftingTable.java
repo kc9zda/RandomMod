@@ -1,9 +1,11 @@
 package kc9zda.mcmod.rcm.extras.container;
 
 import kc9zda.mcmod.rcm.extras.itementity.ItemEntityPortableCraftingTable;
+import kc9zda.mcmod.rcm.itementity.ItemEntityInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
@@ -16,17 +18,17 @@ public class ContainerPortableCraftingTable extends Container {
 	public InventoryCrafting craftingMatrix = new InventoryCrafting(this, 3, 3);
 	private World worldObj;
 	private EntityPlayer player;
-	private IInventory crafting;
+	private IInventory craftingResult = new InventoryCraftResult();
+	private ItemEntityInventory itemEntity;
+	private ItemStack itemStack;
 
-	public ContainerPortableCraftingTable(World w, EntityPlayer playerObj, ItemEntityPortableCraftingTable tableEntity) {
-		if (tableEntity == null) System.err.println("tableEntity IS NULL!!!");
+	public ContainerPortableCraftingTable(World w, EntityPlayer playerObj, ItemEntityPortableCraftingTable tableEntity, ItemStack i2) {
 		this.worldObj = w;
 		this.player = playerObj;
-		//this.craftingMatrix = tableEntity.getCraftingInv(this);
-		this.crafting = tableEntity;
-		if (this.craftingMatrix == null) System.err.println("this.craftingMatrix IS NULL AFTER I SET IT!!!");
-		if (this.crafting== null) System.err.println("this.crafting IS NULL AFTER I SET IT!!!");
-		this.addSlotToContainer(new SlotCrafting(playerObj, this.craftingMatrix, this.crafting, 0, 124, 35));
+		this.itemEntity = tableEntity;
+		this.itemStack = i2;
+		this.itemEntity.readFromNBT(this.itemStack.stackTagCompound);
+		this.addSlotToContainer(new SlotCrafting(playerObj, this.craftingMatrix, this.craftingResult, 0, 124, 35));
 		int i;
 		int j;
 		
@@ -51,6 +53,7 @@ public class ContainerPortableCraftingTable extends Container {
             this.addSlotToContainer(new Slot(this.player.inventory, i, 8 + i * 18, 142));
         }
         
+        tableEntity.readCraftingMatrix(this.craftingMatrix);
         this.onCraftMatrixChanged(this.craftingMatrix);
 	}
 
@@ -61,15 +64,27 @@ public class ContainerPortableCraftingTable extends Container {
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inv) {
-		if (inv == null) System.err.println("inv IS NULL!!!");
-		if (this.crafting == null) System.err.println("this.crafting IS NULL!!!");
-		if (this.craftingMatrix == null) System.err.println("this.craftingMatrix IS NULL!!!");
-		this.crafting.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftingMatrix, this.worldObj));
+		this.craftingResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftingMatrix, this.worldObj));
 	}
 	
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
+		//((ItemEntityPortableCraftingTable) this.itemEntity).writeCraftingMatrix(this.craftingMatrix);
+		//this.itemEntity.writeToNBT(this.itemStack.stackTagCompound);
 		super.onContainerClosed(player);
+
+        if (!this.worldObj.isRemote)
+        {
+            for (int i = 0; i < 9; ++i)
+            {
+                ItemStack itemstack = this.craftingMatrix.getStackInSlotOnClosing(i);
+
+                if (itemstack != null)
+                {
+                    player.dropPlayerItemWithRandomChoice(itemstack, false);
+                }
+            }
+        }
 	}
 	
 	@Override
